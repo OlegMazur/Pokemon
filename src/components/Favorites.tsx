@@ -1,20 +1,15 @@
 import React, { useEffect, useState } from "react";
-
-interface PokemonDetail {
-  id: number;
-  name: string;
-  image: string;
-}
+import { PokemonDetail } from "../types/pokemon";
 
 const Favorites: React.FC = () => {
   const [favorites, setFavorites] = useState<PokemonDetail[]>([]);
-    const removeFromFavorites = (pokemon: PokemonDetail) => {
-        const updatedFavorites = favorites.filter(fav=>fav.id!==pokemon.id);
-        setFavorites(updatedFavorites);
-        localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
-    };
-    const isFavorite = (pokemon: PokemonDetail) =>
-        favorites.some((fav) => fav.id === pokemon.id);
+  const removeFromFavorites = (pokemon: PokemonDetail) => {
+    const updatedFavorites = favorites.filter(fav => fav.id !== pokemon.id);
+    setFavorites(updatedFavorites);
+    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+  };
+  const isFavorite = (pokemon: PokemonDetail) =>
+    favorites.some((fav) => fav.id === pokemon.id);
   useEffect(() => {
     const storedFavorites = localStorage.getItem("favorites");
     if (storedFavorites) {
@@ -47,15 +42,14 @@ const Favorites: React.FC = () => {
             <h3 className="text-lg font-semibold capitalize">{pokemon.name}</h3>
             <button
               onClick={() => removeFromFavorites(pokemon)}
-              
+
               className={`mt-2 px-4 py-2 rounded ${isFavorite(pokemon)
                 ? "bg-blue-500 text-white"
-                :"bg-gray-400 cursor-not-allowed" 
+                : "bg-gray-400 cursor-not-allowed"
                 }`}
             >
               {isFavorite(pokemon) ? "Remove from Favorites" : "Add to Favorites"}
             </button>
-
           </div>
         ))}
       </div>

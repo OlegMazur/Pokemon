@@ -5,7 +5,6 @@ export async function getAllPokemon(limit:number,offset:number){
      
         const response = await fetch(`${API.BASE_URL}?limit=${limit}&offset=${offset}`);
         const data = await response.json();
-
         const results: Pokemon[] = data.results;
         return results
 }
