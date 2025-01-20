@@ -1,10 +1,10 @@
+import { API } from "../constants";
 import { Pokemon } from "../types/pokemon";
 
 export async function getAllPokemon(limit:number,offset:number){
      
-        const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`);
+        const response = await fetch(`${API.BASE_URL}?limit=${limit}&offset=${offset}`);
         const data = await response.json();
-
         const results: Pokemon[] = data.results;
         return results
 }

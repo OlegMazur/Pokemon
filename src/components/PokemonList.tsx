@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { getAllPokemon, getDetailedPokemon } from "../api/api";
 import { PokemonDetail } from "../types/pokemon";
+import { API } from "../constants";
 
 
 const PokemonList: React.FC = () => {
@@ -9,7 +10,6 @@ const PokemonList: React.FC = () => {
     const [favorites, setFavorites] = useState<PokemonDetail[]>([]);
     const [page, setPage] = useState<number>(1);
     const observerTarget = useRef<HTMLDivElement | null>(null);
-    const LIMIT = 20;
     const addToFavorites = (pokemon: PokemonDetail) => {
         const updatedFavorites = [...favorites, pokemon];
         setFavorites(updatedFavorites);
@@ -20,8 +20,8 @@ const PokemonList: React.FC = () => {
     const fetchPokemonList = useCallback(async () => {
         try {
             setLoading(true);
-            const offset = (page - 1) * LIMIT;
-            const results = await getAllPokemon(LIMIT, offset)
+            const offset = (page - 1) * API.LIMIT;
+            const results = await getAllPokemon(API.LIMIT, offset)
             const detailedPokemon = await getDetailedPokemon(results);
 
             setPokemonList((prevList) => {
@@ -36,8 +36,6 @@ const PokemonList: React.FC = () => {
             setLoading(false);
         }
     }, [page]);
-
-
 
     useEffect(() => {
         fetchPokemonList();
@@ -66,9 +64,9 @@ const PokemonList: React.FC = () => {
     useEffect(() => {
         const storedFavorites = localStorage.getItem("favorites");
         if (storedFavorites) {
-          setFavorites(JSON.parse(storedFavorites));
+            setFavorites(JSON.parse(storedFavorites));
         }
-      }, []);
+    }, []);
 
     return (
         <div className="p-6 ">
@@ -89,8 +87,8 @@ const PokemonList: React.FC = () => {
                             onClick={() => addToFavorites(pokemon)}
                             disabled={isFavorite(pokemon)}
                             className={`mt-2 px-4 py-2 rounded ${isFavorite(pokemon)
-                                    ? "bg-gray-400 cursor-not-allowed"
-                                    : "bg-blue-500 text-white"
+                                ? "bg-gray-400 cursor-not-allowed"
+                                : "bg-blue-500 text-white"
                                 }`}
                         >
                             {isFavorite(pokemon) ? "Added to Favorites" : "Add to Favorites"}
